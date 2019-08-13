@@ -1,0 +1,21 @@
+services:
+  contextual_content.inbound:
+    class: Drupal\path_prefix_rewrite\PathProcessor\InboundPathProcessor
+    arguments: ['@config.factory']
+    tags:
+    # Run before any of the other processors, to remove the prefix so that
+    # other processors are dealing with the correct internal path.
+    - { name: path_processor_inbound, priority: 1000 }
+  contextual_content.outbound:
+    class: Drupal\path_prefix_rewrite\PathProcessor\OutboundPathProcessor
+    arguments: ['@config.factory']
+    tags:
+    # Run this after the path alias and front-page processor, so they are able
+    # to work with the correct internal path, only adding the outbound prefix
+    # last.
+    - { name: path_processor_outbound, priority: -1000 }
+
+  path_prefix_rewrite.event_subscriber:
+    class: \Drupal\path_prefix_rewrite\EventSubscriber\PublicBaseUrlSetSubscriber
+    tags:
+      - { name: event_subscriber }

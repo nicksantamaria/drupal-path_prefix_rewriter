@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Module file.
+ */
+
+use Drupal\path_prefix_rewrite\FileUrlTransformer;
+
+/**
+ * Implements hook_file_url_alter().
+ */
+function path_prefix_rewrite_file_url_alter(&$uri) {
+  $updated_uri = \Drupal::classResolver()
+    ->getInstanceFromDefinition(FileUrlTransformer::class)
+    ->transform($uri);
+  $uri = $updated_uri;
+}

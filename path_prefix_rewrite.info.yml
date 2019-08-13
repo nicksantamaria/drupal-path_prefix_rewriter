@@ -1,0 +1,4 @@
+name: Path Prefix Rewrites
+core: 8.x
+type: module
+description: Custom URL rewriting functionality
